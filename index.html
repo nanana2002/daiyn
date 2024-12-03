@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>个人页面</title>
+    <!-- 引入 marked.js 用于解析 Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content"></div>
+
+    <script>
+        const markdownUrl = 'https://raw.githubusercontent.com/YoungP2001/Resume/main/academics.md';
+
+        // 获取并显示 Markdown 内容
+        fetch(markdownUrl)
+            .then(response => response.text())
+            .then(markdown => {
+                const content = document.getElementById('content');
+                content.innerHTML = marked.parse(markdown);
+            })
+            .catch(error => {
+                console.error('Error loading markdown:', error);
+                document.getElementById('content').innerHTML = '加载失败，请稍后重试';
+            });
+    </script>
+</body>
+</html>
