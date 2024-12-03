@@ -5,6 +5,11 @@
     <title>个人页面</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -12,7 +17,7 @@
         }
         
         .language-switch {
-            position: fixed;
+            position: absolute;  /* 改为绝对定位 */
             top: 20px;
             right: 20px;
             padding: 8px 16px;
@@ -22,6 +27,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            z-index: 1000;  /* 确保按钮在最上层 */
         }
 
         .language-switch:hover {
@@ -30,6 +36,7 @@
     </style>
 </head>
 <body>
+    <!-- 将按钮移到 container 之前 -->
     <button class="language-switch" id="langSwitch">中文/English</button>
     <div class="container" id="content"></div>
 
@@ -38,7 +45,6 @@
         const chineseUrl = 'https://raw.githubusercontent.com/BH3GEI/Resume/main/academics_cn.md';
         let isEnglish = true;
 
-        // 加载 Markdown 内容的函数
         function loadMarkdown(url) {
             fetch(url)
                 .then(response => response.text())
@@ -52,13 +58,14 @@
                 });
         }
 
-        // 初始加载英文版本
-        loadMarkdown(englishUrl);
-
-        // 添加切换按钮事件监听
-        document.getElementById('langSwitch').addEventListener('click', () => {
-            isEnglish = !isEnglish;
-            loadMarkdown(isEnglish ? englishUrl : chineseUrl);
+        // 确保 DOM 加载完成后再执行
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMarkdown(englishUrl);
+            
+            document.getElementById('langSwitch').addEventListener('click', () => {
+                isEnglish = !isEnglish;
+                loadMarkdown(isEnglish ? englishUrl : chineseUrl);
+            });
         });
     </script>
 </body>
